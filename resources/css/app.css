@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        color-scheme: light;
+        --brand-50: #f5f7ff;
+        --brand-100: #e8ecff;
+        --brand-500: #4f46e5;
+        --brand-600: #4338ca;
+        --brand-700: #3730a3;
+        --surface: #f7f8fc;
+        --surface-dark: #0f172a;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-slate-50 text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-100;
+        font-family: "Instrument Sans", "Figtree", sans-serif;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .shell {
+        @apply min-h-screen bg-[radial-gradient(circle_at_top,_rgba(79,70,229,0.08),_transparent_35%),linear-gradient(180deg,#f8fafc_0%,#eef2ff_100%)] dark:bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.18),_transparent_30%),linear-gradient(180deg,#020617_0%,#0f172a_100%)];
+    }
+
+    .panel {
+        @apply rounded-3xl border border-slate-200/70 bg-white/85 shadow-[0_20px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur dark:border-slate-800/80 dark:bg-slate-900/80;
+    }
+
+    .panel-muted {
+        @apply rounded-2xl border border-slate-200/80 bg-slate-50/80 dark:border-slate-800 dark:bg-slate-900/60;
+    }
+
+    .input {
+        @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100;
+    }
+
+    .label {
+        @apply mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200;
+    }
+
+    .btn {
+        @apply inline-flex items-center justify-center rounded-2xl px-4 py-2.5 text-sm font-semibold transition focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .btn-primary {
+        @apply btn bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500/20;
+    }
+
+    .btn-secondary {
+        @apply btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 focus:ring-slate-300/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800;
+    }
+
+    .btn-danger {
+        @apply btn bg-rose-600 text-white hover:bg-rose-700 focus:ring-rose-500/20;
+    }
+
+    .metric-card {
+        @apply panel p-6;
+    }
+}
