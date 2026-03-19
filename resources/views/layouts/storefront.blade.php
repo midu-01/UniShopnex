@@ -18,7 +18,7 @@
                     @endforeach
                 </nav>
                 <div class="flex items-center gap-3">
-                    <button type="button" onclick="window.applyTheme(localStorage.getItem('theme') === 'dark' ? 'light' : 'dark')" class="btn-secondary">
+                    <button type="button" onclick="window.toggleTheme()" class="btn-secondary">
                         Theme
                     </button>
                     @auth

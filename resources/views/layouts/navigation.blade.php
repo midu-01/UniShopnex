@@ -5,7 +5,7 @@
 
     <div class="flex items-center gap-3">
         <a href="{{ route('home') }}" class="btn-secondary">Storefront</a>
-        <button type="button" onclick="window.applyTheme(localStorage.getItem('theme') === 'dark' ? 'light' : 'dark')" class="btn-secondary">
+        <button type="button" onclick="window.toggleTheme()" class="btn-secondary">
             Theme
         </button>
         <div class="hidden text-right sm:block">

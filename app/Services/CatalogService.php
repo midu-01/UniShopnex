@@ -18,12 +18,16 @@ class CatalogService
 
     public function featuredProducts(): Collection
     {
-        return Cache::remember('storefront.featured-products', now()->addMinutes(15), fn () => $this->products->featured());
+        return $this->rememberCollection(
+            'storefront.featured-products',
+            now()->addMinutes(15),
+            fn (): Collection => $this->products->featured(),
+        );
     }
 
     public function featuredCategories(): Collection
     {
-        return Cache::remember('storefront.featured-categories', now()->addMinutes(30), function (): Collection {
+        return $this->rememberCollection('storefront.featured-categories', now()->addMinutes(30), function (): Collection {
             return Category::query()
                 ->where('is_active', true)
                 ->where('is_featured', true)
@@ -41,16 +45,21 @@ class CatalogService
 
     public function findProductBySlug(string $slug): ?Product
     {
-        return Cache::remember(
-            'storefront.product.'.$slug,
-            now()->addMinutes(15),
-            fn () => $this->products->findPublishedBySlug($slug)
-        );
+        $key = 'storefront.product.'.$slug;
+        $cached = Cache::get($key);
+
+        if ($cached === null || $cached instanceof Product) {
+            return $cached ?? tap($this->products->findPublishedBySlug($slug), fn (?Product $product) => Cache::put($key, $product, now()->addMinutes(15)));
+        }
+
+        Cache::forget($key);
+
+        return tap($this->products->findPublishedBySlug($slug), fn (?Product $product) => Cache::put($key, $product, now()->addMinutes(15)));
     }
 
     public function navigationCategories(): Collection
     {
-        return Cache::remember('storefront.navigation-categories', now()->addMinutes(60), function (): Collection {
+        return $this->rememberCollection('storefront.navigation-categories', now()->addMinutes(60), function (): Collection {
             return Category::query()
                 ->where('is_active', true)
                 ->withCount('products')
@@ -68,5 +77,23 @@ class CatalogService
         if ($product) {
             Cache::forget('storefront.product.'.$product->slug);
         }
+    }
+
+    protected function rememberCollection(string $key, \DateTimeInterface|\DateInterval|int $ttl, callable $resolver): Collection
+    {
+        $cached = Cache::get($key);
+
+        if ($cached instanceof Collection) {
+            return $cached;
+        }
+
+        if ($cached !== null) {
+            Cache::forget($key);
+        }
+
+        $fresh = $resolver();
+        Cache::put($key, $fresh, $ttl);
+
+        return $fresh;
     }
 }

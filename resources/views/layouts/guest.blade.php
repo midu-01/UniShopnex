@@ -26,7 +26,7 @@
                         <a href="{{ route('home') }}">
                             <x-application-logo />
                         </a>
-                        <button type="button" onclick="window.applyTheme(localStorage.getItem('theme') === 'dark' ? 'light' : 'dark')" class="btn-secondary">
+                        <button type="button" onclick="window.toggleTheme()" class="btn-secondary">
                             Theme
                         </button>
                     </div>
